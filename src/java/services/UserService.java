@@ -45,4 +45,7 @@ public class UserService {
         user.setEmail(email);
         return userDB.insert(user);
     }
+    public User getByEmail(String email) throws Exception{
+        return userDB.getUserByEmail(email);
+    }
 }

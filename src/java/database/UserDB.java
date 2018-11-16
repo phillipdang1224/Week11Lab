@@ -21,7 +21,7 @@ public class UserDB {
         try {
             Role role = em.find(Role.class, 2);  // 2 is for regular user
             user.setRole(role);
-            
+
             trans.begin();
             em.persist(user);
             trans.commit();
@@ -56,7 +56,7 @@ public class UserDB {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         try {
             List<User> users = em.createNamedQuery("User.findAll", User.class).getResultList();
-            return users;                
+            return users;
         } finally {
             em.close();
         }
@@ -85,6 +85,22 @@ public class UserDB {
             Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot delete " + user.toString(), ex);
             throw new NotesDBException("Error deleting user");
         } finally {
+            em.close();
+        }
+    }
+
+    public User getUserByEmail(String email) throws NotesDBException {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            User user = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
+            return user;
+        } catch (Exception e) {
+            trans.rollback();
+            
+            throw new NotesDBException("Error getting user");
+        }
+        finally{
             em.close();
         }
     }
