@@ -20,12 +20,13 @@ public class UserService {
         return userDB.getAll();
     }
 
-    public int update(String username, String password, String firstname, String lastname, String email) throws Exception {
+    public int update(String username, String password, String firstname, String lastname, String email,String uuid) throws Exception {
         User user = get(username);
         user.setPassword(password);
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);
+        user.setResetPasswordUUID(uuid);
         return userDB.update(user);
     }
 
@@ -47,5 +48,9 @@ public class UserService {
     }
     public User getByEmail(String email) throws Exception{
         return userDB.getUserByEmail(email);
+    }
+
+    User getByUUID(String uuid) {
+        return userDB.getByUUID(uuid);
     }
 }

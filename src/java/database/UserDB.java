@@ -97,11 +97,27 @@ public class UserDB {
             return user;
         } catch (Exception e) {
             trans.rollback();
-            
+
             throw new NotesDBException("Error getting user");
-        }
-        finally{
+        } finally {
             em.close();
         }
     }
+
+    public User getByUUID(String uuid) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            User user = em.createNamedQuery("User.findByResetPasswordUUID", User.class).setParameter("resetPasswordUUID", uuid).getSingleResult();
+            return user;
+        } catch (Exception e) {
+            trans.rollback();
+
+            
+        } finally {
+            em.close();
+        }
+        return null;
+    
+}
 }

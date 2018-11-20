@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         String email = request.getParameter("email");
-
+        
         UserService us = new UserService();
 
         try {
@@ -58,7 +58,7 @@ public class UserServlet extends HttpServlet {
                 String selectedUsername = request.getParameter("selectedUsername");
                 us.delete(selectedUsername);
             } else if (action.equals("edit")) {
-                us.update(username, password, firstname, lastname, email);
+                us.update(username, password, firstname, lastname, email,null);
             } else if (action.equals("add")) {
                 us.insert(username, password, firstname, lastname, email);
             }

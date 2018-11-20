@@ -72,4 +72,40 @@ public class AccountService {
         }
         return false;
     }
+    public boolean resetPassword(String email, String path, String url) throws NotesDBException{
+                UserDB userDB = new UserDB();
+        User user = userDB.getUserByEmail(email);
+        if(user.getEmail().equals(email)){
+                
+                String subject = "Notes App Forgot Password";
+                String template = path + "/emailtemplates/resetpass.html";
+
+                HashMap<String, String> tags = new HashMap<>();
+                tags.put("firstname", user.getFirstname());
+                tags.put("lastname", user.getLastname());
+                tags.put("username",user.getUsername());
+                tags.put("link", url);
+
+                GmailService.sendMail(email, subject, template, tags);
+
+            
+            return true;
+        }
+        return false;
+       
+    }
+        public boolean changePassword(String uuid, String password) {
+        UserService us = new UserService();
+        try {
+            User user = us.getByUUID(uuid);
+            user.setPassword(password);
+            user.setResetPasswordUUID(null);
+            UserDB ur = new UserDB ();
+            ur.update(user);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
 }
